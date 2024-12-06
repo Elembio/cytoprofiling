@@ -1,6 +1,6 @@
 Package: cytoprofiling
 Title: Package for processing data from Element Biosciences Teton cytoprofiling platform
-Version: 0.0.0.9000
+Version: 1.0.0.0
 Authors@R: 
     person("Ryan", "Kelley", , "ryan.kelley@elembio.com", role = c("aut", "cre"))
 Description: Functions for processing of cytoprofiling data
