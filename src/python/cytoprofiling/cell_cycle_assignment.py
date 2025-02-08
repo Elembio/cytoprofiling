@@ -43,6 +43,8 @@ def cluster_cells(adata, targets="all", do_log=True, do_norm=True, resolution=1)
     if do_log:
         sc.pp.log1p(adata)
 
+    sc.pp.scale(adata)
+
     sc.tl.pca(adata)
 
     sc.pp.neighbors(adata)
@@ -72,6 +74,8 @@ def assign_cell_phase(adata, s_genes=S_GENES, g2m_genes=G2M_GENES, do_log=True, 
 
     if do_log:
         sc.pp.log1p(adata)
+
+    sc.pp.scale(adata)
 
     sc.tl.score_genes_cell_cycle(adata, s_genes=s_genes, g2m_genes=g2m_genes)
 
