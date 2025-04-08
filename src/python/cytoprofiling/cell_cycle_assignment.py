@@ -223,7 +223,7 @@ def assign_cell_phase(adata):
       adata : Cytoprofiling anndata object
 
     Returns:
-      adata with cell phase scores as as "phase" in obs
+      adata with cell phase scores as "phase" in obs
     """
     if not _has_scanpy:
         raise ImportError("scanpy is required for assign_cell_phase")

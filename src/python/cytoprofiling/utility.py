@@ -154,9 +154,9 @@ def cytoprofiling_to_anndata(df : pd.DataFrame, panel_json : dict = None, drop_n
       result = [""] * len(data_columns)
       for idx in range(len(data_columns)):
           assigned_category = "NA"
-          for cell_profile_modulue in cell_profiler_modules:
-              if data_columns[idx].startswith(cell_profile_modulue):
-                  assigned_category = cell_profile_modulue
+          for cell_profiler_module in cell_profiler_modules:
+              if data_columns[idx].startswith(cell_profiler_module):
+                  assigned_category = cell_profiler_module
                   break
           result[idx] = assigned_category
       return np.array(result)
