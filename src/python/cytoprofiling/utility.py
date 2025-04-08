@@ -185,7 +185,7 @@ def cytoprofiling_to_anndata(df : pd.DataFrame, panel_json : dict = None, drop_n
 
   def assign_gene(data_columns, panel_json):
       result = [""] * len(data_columns)
-      targets = [(target.get("Target", ""), target.get("BatchName", "")) for target in panel_json.get("BarcodingTargets",[])] + [target.get("Target","") + "_Nuclear." + target.get("BatchName","") for target in panel_json.get("BarcodingTargets",[])]
+      targets = [(target.get("Target", ""), target.get("BatchName", "")) for target in panel_json.get("BarcodingTargets",[])]
       target2gene = {}
       for target in targets:
           target2gene[target[0] + "." + target[1]] = target[0]
@@ -229,7 +229,7 @@ def cytoprofiling_to_anndata(df : pd.DataFrame, panel_json : dict = None, drop_n
               for target in imaging_targets:
                   if f"_{target}." in data_columns[idx] or data_columns[idx].startswith(f"{target}.") or data_columns[idx].startswith(f"{target}_"):
                       assigned_category = "morphology"
-                  break
+                      break
           result[idx] = assigned_category
       return np.array(result)
 
