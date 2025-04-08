@@ -2,10 +2,11 @@
 This repository contains methods and examples for processing data from the Element Biosciences Teton cytoprofiling assay. Both python and R packages are provided. In addition, Cellpose segmentation models trained on Cell Paint images from the Element Biosciences Teton cytoprofiling assay are included.
 
 ## Installation
-Package installation is performed in the typical fashion for each language. 
+After downloading the repository and changing the current directory to the downloaded location, package installation is performed in the typical fashion for each language. 
 
 python
 ```
+cd <path to downloaded location of repository>
 pip3 install src/python
 
 # if desired, can specify installation of additional dependences for integration with scanpy/anndata with the "scanpy" extra
@@ -14,6 +15,7 @@ pip3 install src/python[scanpy]
 
 R
 ```
+setwd("<path to downloaded location of repository>")
 library("devtools")
 devtools::install("src/R/cytoprofiling")
 ```
