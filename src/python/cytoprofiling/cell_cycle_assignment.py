@@ -5,74 +5,236 @@ except ImportError:
 else:
     _has_scanpy = True
 
+CELL_STATE_GENES_MAP = {
+    "G1": [
+        "CDCA3",
+        "DLGAP5",
+        "AURKB",
+        "KIF2C",
+        "CENPE",
+        "CDK1",
+        "CENPA",
+        "CDCA8",
+        "NDC80",
+        "ECT2",
+        "CDCA2",
+        "HJURP",
+        "TTK",
+        "TACC3",
+        "NUF2",
+        "NEK2",
+        "G2E3",
+        "BUB1",
+        "PSRC1",
+        "KIF11",
+        "CKAP5",
+        "HSPA1A",
+        "GTSE1",
+        "KIF20B",
+        "SMC4",
+        "CKAP2L",
+        "CKAP2",
+        "CDC25B",
+        "HMMR",
+        "BIRC5",
+        "FLT1",
+        "DUSP4",
+        "LBR",
+        "TGFBR1",
+        "MAP2K4",
+        "FGFR1",
+        "CTCF",
+        "EPHA2",
+        "POLR1B",
+        "PPM1B",
+        "MYC",
+        "ATF2",
+        "PTPRR",
+        "WEE1",
+        "RASA1",
+        "PPM1A",
+        "MAPK10",
+        "JUN",
+        "TGFBR2",
+        "GADD45B",
+    ],
+    "G2": [
+        "UNG",
+        "MYC",
+        "CDCA7",
+        "MCM6",
+        "SLBP",
+        "TIPIN",
+        "MCM4",
+        "UHRF1",
+        "MAPKAPK3",
+        "RRAS2",
+        "STMN1",
+        "WDR76",
+        "CDC6",
+        "HELLS",
+        "MKNK2",
+        "DTL",
+        "CASP8AP2",
+        "GINS2",
+        "ARRB2",
+        "IRAK1",
+        "PPP3CA",
+        "POLR1B",
+        "POLD3",
+        "PRIM1",
+        "GRB2",
+        "MSH2",
+        "RPS6KA4",
+        "TAOK2",
+        "ELK1",
+        "DUSP7",
+        "MAP2K7",
+        "ECSIT",
+        "POLA1",
+        "MAP3K2",
+        "USP1",
+        "MAP2K3",
+        "IGF1R",
+        "DUSP10",
+        "MAX",
+        "GADD45G",
+        "MAP2K1",
+        "HRAS",
+        "ATF4",
+        "ELK4",
+        "MAP3K21",
+        "STK4",
+        "GMNN",
+        "TRAF2",
+        "CHAF1B",
+        "MST1",
+    ],
+    "M": [
+        "DLGAP5",
+        "NEK2",
+        "CENPE",
+        "ECT2",
+        "NUF2",
+        "BIRC5",
+        "CENPA",
+        "KIF2C",
+        "BUB1",
+        "G2E3",
+        "CDCA3",
+        "CKAP5",
+        "GTSE1",
+        "RAP1B",
+        "HMMR",
+        "NDC80",
+        "KIF20B",
+        "MAP2K4",
+        "FLT1",
+        "TACC3",
+        "AURKB",
+        "TTK",
+        "EPHA2",
+        "CDCA2",
+        "ATF4",
+        "CDCA8",
+        "RELB",
+        "DUSP1",
+        "SRF",
+        "NRAS",
+        "DUSP7",
+        "NFKB2",
+        "DUSP4",
+        "HSPB1",
+        "GADD45A",
+        "FLNA",
+        "MAPKAPK2",
+        "CKAP2L",
+        "CRK",
+        "MRAS",
+        "TGFBR1",
+        "MET",
+        "MKNK2",
+        "TAB2",
+        "GADD45B",
+        "MYC",
+        "RASGRP1",
+        "PTPRR",
+        "FLT4",
+        "GCK",
+    ],
+    "S": [
+        "RRM2",
+        "RAD51AP1",
+        "CDC45",
+        "CDK1",
+        "EXO1",
+        "CLSPN",
+        "ATAD2",
+        "DTL",
+        "HJURP",
+        "KIF11",
+        "NDC80",
+        "MCM4",
+        "AURKB",
+        "CKAP2L",
+        "SMC4",
+        "UBR7",
+        "POLD3",
+        "CDC6",
+        "HELLS",
+        "TACC3",
+        "RAD51",
+        "MSH2",
+        "GMNN",
+        "RFC2",
+        "CDCA2",
+        "CHAF1B",
+        "USP1",
+        "MAP3K3",
+        "TP53",
+        "RPS6KA1",
+        "POLA1",
+        "JUND",
+        "CDCA8",
+        "MAP3K6",
+        "DSCC1",
+        "TAOK2",
+        "AKT1",
+        "TTK",
+        "PRKACA",
+        "KIF2C",
+        "PAK1",
+        "MAPK14",
+        "TNFRSF1A",
+        "SOS2",
+        "WDR76",
+        "PSRC1",
+        "MAPK7",
+        "TEK",
+        "MAP3K12",
+        "MCM6",
+    ],
+}
 
-# https://www.nature.com/articles/nbt.3192
-S_GENES = [
-    "MCM5", "PCNA", "TYMS", "FEN1", "MCM2", "MCM4", "RRM1", "UNG", "GINS2", "MCM6",
-    "CDCA7", "DTYMK", "RFC2", "RPA2", "NASP", "POLD3", "RPA3", "PRIM1", "UHRF1", "MSH2",
-    "ATAD2", "RAD51AP1", "GMNN", "WDR76", "SLBP", "CCNE2", "UBR7", "POLD2", "MSH6", "EXO1",
-    "TIPIN", "DSCC1", "BLM", "CASP8AP2", "USP1", "CLSPN", "POLA1", "CHAF1B", "BRIP1", "E2F8"
-]
-G2M_GENES = [
-    "HMGB2", "CDK1", "NUSAP1", "UBE2C", "BIRC5", "TPX2", "TOP2A", "NDC80", "CENPF", "TACC3",
-    "FAM64A", "SMC4", "CCNB2", "CKAP2L", "CKAP2", "AURKB", "BUB1", "KIF2C", "MAD2L1", "BUB1B",
-    "NDC80", "SKA3", "CENPE", "TTK", "CDC20", "BIRC5", "KIF20B", "PSRC1", "ANLN", "KIF23",
-    "AURKA", "PLK1", "NEK2", "G2E3", "GAS2L3", "CBX5", "CENPA"
-]
-
-def cluster_cells(adata, targets="all", do_log=True, do_norm=True, resolution=1):
-    """Cluster cells into subgroups via the Leiden algorithm
-
-    Args:
-      adata : Cytoprofiling anndata object
-
-    Returns:
-      adata with PCA, neighborhood graph, and leiden clusters
-    """
-    if not _has_scanpy:
-        raise ImportError("scanpy is required for cluster_cells")
-    
-    if not targets == "all":
-        adata = adata[:, targets]
-
-    adata.layers["counts"] = adata.X.copy()
-
-    if do_norm:
-        sc.pp.normalize_total(adata)
-
-    if do_log:
-        sc.pp.log1p(adata)
-
-    sc.tl.pca(adata)
-
-    sc.pp.neighbors(adata)
-
-    sc.tl.leiden(adata, resolution=resolution, flavor="igraph", n_iterations=2)
-    return adata
-
-def assign_cell_phase(adata, s_genes=S_GENES, g2m_genes=G2M_GENES, do_log=True, do_norm=True):
+def assign_cell_phase(adata):
     """Assign cell phase based on known targets
 
     Args:
       adata : Cytoprofiling anndata object
 
     Returns:
-      adata with cell phase scores and classifications
+      adata with cell phase scores as "phase" in obs
     """
     if not _has_scanpy:
         raise ImportError("scanpy is required for assign_cell_phase")
+    
+    num_genes = 50
+    states = sorted(CELL_STATE_GENES_MAP.keys())
+    for state in states:
+        genes = CELL_STATE_GENES_MAP[state]
+        genes = [x for x in genes if x in list(adata.var.index)][:num_genes]
+        sc.tl.score_genes(adata,genes,score_name=state)
 
-    s_genes = [x for x in s_genes if x in adata.var_names]
-    g2m_genes = [x for x in g2m_genes if x in adata.var_names]
-
-    adata.layers["counts"] = adata.X.copy()
-
-    if do_norm:
-        sc.pp.normalize_total(adata)
-
-    if do_log:
-        sc.pp.log1p(adata)
-
-    sc.tl.score_genes_cell_cycle(adata, s_genes=s_genes, g2m_genes=g2m_genes)
+    adata.obs["phase"] = adata.obs[states].idxmax(axis=1)
 
     return adata
