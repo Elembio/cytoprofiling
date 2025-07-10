@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="cytoprofiling",
-    version="1.0.0",
+    version="1.1.1",
     description="Package for processing data from Element Biosciences Teton cytoprofiling platform",
     author="Ryan Kelley",
     author_email="ryan.kelley@elembio.com",
