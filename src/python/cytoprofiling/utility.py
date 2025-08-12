@@ -113,6 +113,45 @@ def get_imaging_batches_from_panel(panel_json : dict) -> list[str]:
     """
     return list(batch_data["BatchName"] for batch_data in panel_json["ImagingPrimerTubes"])
 
+def get_targets_for_batch(panel_json: dict, batch_name: str) -> list[str]:
+  """
+  Get list of target names for a specific barcoding batch from the panel JSON.
+
+  Args:
+    panel_json: Panel configuration as a dictionary (as read by json.load)
+    batch_name: Name of the barcoding batch.
+
+  Returns:
+    List of target names for the specified batch.
+  """
+  return [target["Target"] for target in panel_json["BarcodingTargets"] if target["BatchName"] == batch_name]
+
+def get_target_name_for_barcode_index(
+  barcode_index: int,
+  panel_json: dict,
+  batch_name: str
+) -> str:
+  """
+  Returns the target name corresponding to a given barcode index for a specific batch.
+
+  Args:
+    barcode_index: The index of the barcode as read from barcodes parquet file. If 0, returns "Unassigned".
+    panel_json: Panel configuration as a dictionary (as read by json.load)
+    batch_name: The name of the batch to retrieve targets from.
+
+  Returns:
+    The target name corresponding to the barcode index, or "Unassigned" if index is 0.
+
+  Raises:
+    ValueError: If the barcode index is out of range for the specified batch.
+  """
+  if barcode_index == 0:
+    return "Unassigned"
+  targets = get_targets_for_batch(panel_json, batch_name)
+  if barcode_index > len(targets):
+    raise ValueError(f"Barcode index {barcode_index} is out of range for batch '{batch_name}' with {len(targets)} targets.")
+  return targets[barcode_index - 1]
+  
 
 def cytoprofiling_to_anndata(df : pd.DataFrame, panel_json : dict = None, drop_na : bool = True) -> ad.AnnData:
   """Convert cytoprofiling dataframe to anndata object
