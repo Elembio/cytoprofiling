@@ -4,10 +4,21 @@
 \alias{cytoprofiling_to_seurat}
 \title{Export cytoprofiling cell table to Seurat object}
 \usage{
-cytoprofiling_to_seurat(df)
+cytoprofiling_to_seurat(
+  df,
+  panel_json,
+  use_gene_names = TRUE,
+  split_assays = FALSE
+)
 }
 \arguments{
-\item{df}{Cell table}
+\item{df}{Cell table (see load_cytoprofiling)}
+
+\item{panel_json}{JSON data for Panel.json (see load_panel)}
+
+\item{use_gene_names}{If TRUE, use gene names as rownames, otherwise use target names. Duplicate gene names will be removed.}
+
+\item{split_assays}{If TRUE, split the transcript and protein barcoding targets into separate Seurat assays ("Transcript" and "Protein", respectively).}
 }
 \value{
 Seurat object
