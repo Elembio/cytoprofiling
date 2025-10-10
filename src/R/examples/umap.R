@@ -6,7 +6,7 @@ library(cytoprofiling)
 panel_json_filename <- ""
 parquet_filename <- ""
 
-panel_json <- fromJSON(file = panel_json_filename)
+panel_json <- load_panel(panel_json_filename)
 teton_df <- load_cytoprofiling(parquet_filename)
 teton_df <- normalize_cytoprofiling(filter_cells(teton_df))
 seurat_data <- cytoprofiling_to_seurat(teton_df, panel_json, use_gene_names = FALSE, split_assays = FALSE)
