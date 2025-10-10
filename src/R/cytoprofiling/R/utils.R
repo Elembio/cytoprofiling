@@ -1,3 +1,6 @@
+library(arrow)
+library(rjson)
+
 #' Load a parquet file into a data frame
 #'
 #' Calls arrow::read_parquet to load cytoprofiling
@@ -9,6 +12,18 @@
 load_cytoprofiling <- function(input_filename) {
   return(as.data.frame(arrow::read_parquet(input_filename)))
 }
+
+#' Load a Panel.json file
+#' 
+#' Calls rjson::fromJSON to load a Panel.json file
+#' 
+#' @param input_filename Path to the Panel.json file
+#' @return JSON data as a list
+#' @export
+load_panel <- function(input_filename) {
+  return (rjson::fromJSON(file = input_filename))
+}
+
 
 #' Get a list of barcoding batches
 #'

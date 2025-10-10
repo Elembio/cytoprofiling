@@ -1,3 +1,10 @@
+# 1.2.0
+2025/10/10
+
+* Provide updated method to create Seurat object
+* Provide convenience method to load panel json
+
+
 # 1.1.1
 2025/07/10
 
