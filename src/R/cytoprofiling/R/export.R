@@ -8,7 +8,7 @@ library(Seurat)
 #' @param split_assays If TRUE, split the transcript and protein barcoding targets into separate Seurat assays ("Transcript" and "Protein", respectively).
 #' @return Seurat object
 #' @export
-cytoprofiling_to_seurat <- function(df, panel_json, use_gene_names = FALSE, split_assays = FALSE) {
+cytoprofiling_to_seurat <- function(df, panel_json, use_gene_names = TRUE, split_assays = FALSE) {
   barcoding_targets <- panel_json$BarcodingTargets
 
   if (split_assays) {
