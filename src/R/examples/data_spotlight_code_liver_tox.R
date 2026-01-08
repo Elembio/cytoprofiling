@@ -3,7 +3,7 @@
 
 ################################################## Libraries ##################################################
 # Load and install all required R packages. 
-pkgs <- c("Seurat", "cytoprofiling", "dplyr", "ComplexHeatmap", "circlize")
+pkgs <- c("Seurat", "cytoprofiling", "dplyr", "ComplexHeatmap", "circlize", "ggplot2")
 
 for (p in pkgs) {
   if (!require(p, character.only = TRUE)) {
@@ -12,10 +12,15 @@ for (p in pkgs) {
   }
 }
 
-if (!require("BiocManager", quietly = TRUE))
+if (!require("BiocManager", quietly = TRUE)){
   install.packages("BiocManager")
+}
+library("BiocManager")
 
-BiocManager::install("glmGamPoi")
+if (!require("glmGamPoi", quietly = TRUE)) {
+  BiocManager::install("glmGamPoi")
+}
+library("glmGamPoi")
 
 ################################################## Color Palettes ##################################################
 # Define custom color palettes for plotting each drug treatment. 
@@ -47,17 +52,18 @@ cytoprofiling_to_seurat <- function(df, min.features = 25, min.cells = 20) {
 }
 
 ##### label_to_treatment: collapses triplicate wells into a single treatment condition
-# Converts replicate-labeled wells (e.g., "ACE-10.1") to a unified treatment key (e.g., "ACE-10").
+# Converts replicate-labeled wells (e.g., "ACE_10mM_Rep1") to a unified treatment key (e.g., "ACE-10").
 # Useful for averaging/aggregation and simpler plotting facets/legends.
+
 label_to_treatment <- function(x) {
   dplyr::case_when(
-    x %in% c("AMO-30.1","AMO-30.2","AMO-30.3")      ~ "AMO-30",
-    x %in% c("DOX-10.1","DOX-10.2","DOX-10.3")      ~ "DOX-10",
-    x %in% c("ACE-10.1","ACE-10.2","ACE-10.3")      ~ "ACE-10",
-    x %in% c("TUN-2.1","TUN-2.2","TUN-2.3")         ~ "TUN-2",
-    x %in% c("DIC-200.1","DIC-200.2","DIC-200.3")   ~ "DIC-200",
-    x %in% c("MEDIA.1","MEDIA.2","MEDIA.3")         ~ "MEDIA",
-    x %in% c("DMSO.1","DMSO.2","DMSO.3")            ~ "DMSO",
+    x %in% c("AMO_30uM_Rep1","AMO_30uM_Rep2","AMO_30uM_Rep3") ~ "AMO-30",
+    x %in% c("DOX_15uM_Rep1","DOX_15uM_Rep2","DOX_15uM_Rep3") ~ "DOX-10",
+    x %in% c("ACE_10mM_Rep1","ACE_10mM_Rep2","ACE_10mM_Rep3") ~ "ACE-10",
+    x %in% c("TUN_2.4uM_Rep1","TUN_2.4uM_Rep2","TUN_2.4uM_Rep3") ~ "TUN-2",
+    x %in% c("DIC_200uM_Rep1","DIC_200uM_Rep2","DIC_200uM_Rep3") ~ "DIC-200",
+    x %in% c("MEDIA_Rep1","MEDIA_Rep2","MEDIA_Rep3") ~ "MEDIA",
+    x %in% c("DMSO_Rep1","DMSO_Rep2","DMSO_Rep3") ~ "DMSO",
     TRUE ~ NA_character_
   )
 }
@@ -79,20 +85,22 @@ treatment_to_drug_group <- function(x) {
 ################################################## Load & Subset Wells ##################################################
 ##### Load RawCellStats file (per-cell matrix + metadata from CytoProfiling)
 # Replace your filename here
-mini_file <- "279_RawCellStats.parquet"
+mini_file <- "RawCellStats.parquet"
 mini_raw  <- load_cytoprofiling(mini_file)
 
 ##### Define the wells to include downstream
-# Keeps controls, four drugs, and doxorubicin; MEDIA.3 was excluded due to QC.
+# Keeps controls, four drugs, and doxorubicin; MEDIA_Rep3 was excluded due to QC.
+
 wells_to_analyze <- c(
-  "DMSO.1","DMSO.2","DMSO.3",
-  "ACE-10.1","ACE-10.2","ACE-10.3",
-  "AMO-30.1","AMO-30.2","AMO-30.3",
-  "DOX-10.1","DOX-10.2","DOX-10.3",
-  "TUN-2.1","TUN-2.2","TUN-2.3",
-  "DIC-200.1","DIC-200.2","DIC-200.3",
-  "MEDIA.1","MEDIA.2"   # Well MEDIA.3 dropped for QC
+  "DMSO_Rep1","DMSO_Rep2","DMSO_Rep3",
+  "ACE_10mM_Rep1","ACE_10mM_Rep2","ACE_10mM_Rep3",
+  "AMO_30uM_Rep1","AMO_30uM_Rep2","AMO_30uM_Rep3",
+  "DOX_15uM_Rep1","DOX_15uM_Rep2","DOX_15uM_Rep3",
+  "TUN_2.4uM_Rep1","TUN_2.4uM_Rep2","TUN_2.4uM_Rep3",
+  "DIC_200uM_Rep1","DIC_200uM_Rep2","DIC_200uM_Rep3",
+  "MEDIA_Rep1","MEDIA_Rep2"
 )
+
 mini_raw <- subset(mini_raw, subset = WellLabel %in% wells_to_analyze)
 
 ################################################## Store morphology as metadata ##################################################
@@ -232,4 +240,3 @@ ht_rna <- ComplexHeatmap::Heatmap(
 # Render protein first, then RNA, so they appear one after another.
 draw(ht_prot)
 draw(ht_rna)
-
