@@ -15,11 +15,11 @@ normalize_cells_by_aggregated_counts <- function(df, batch_names = c(), normaliz
     batch_names <- get_barcoding_batches(result)
   }
   for (batch in batch_names) {
-    if (length(normalization_targets) == 0) {
-      normalization_targets <- get_default_normalization_targets(result, batch)
+    batch_targets <- normalization_targets
+    if (length(batch_targets) == 0) {
+      batch_targets <- get_default_normalization_targets(result, batch)
     }
-    normalization_targets <- get_default_normalization_targets(result, batch)
-    norm_values <- rowSums(result[, normalization_targets], na.rm = TRUE)
+    norm_values <- rowSums(result[, batch_targets], na.rm = TRUE)
     for (target in get_all_targets(result, batch)) {
       result[target] <- result[target] / norm_values
     }
