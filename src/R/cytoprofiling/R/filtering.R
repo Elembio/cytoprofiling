@@ -91,6 +91,8 @@ filter_cells_by_assigned_rate <- function(df, batch_names = c(), well_names = c(
 #' Perform default filtering of cells (filter by area, assigned counts, and assigned rate)
 #'
 #' @param df Cell table
+#' @param batch_names List of batch names
+#' @param well_names List of well names
 #' @return Filtered cell table
 #' @export
 filter_cells <- function(df, batch_names = c(), well_names = c()) {

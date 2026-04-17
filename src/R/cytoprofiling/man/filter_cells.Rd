@@ -8,6 +8,10 @@ filter_cells(df, batch_names = c(), well_names = c())
 }
 \arguments{
 \item{df}{Cell table}
+
+\item{batch_names}{List of batch names}
+
+\item{well_names}{List of well names}
 }
 \value{
 Filtered cell table

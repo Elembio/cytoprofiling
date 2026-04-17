@@ -7,7 +7,7 @@
 cytoprofiling_to_seurat(
   df,
   panel_json,
-  use_gene_names = TRUE,
+  use_gene_names = FALSE,
   split_assays = FALSE
 )
 }
@@ -18,7 +18,7 @@ cytoprofiling_to_seurat(
 
 \item{use_gene_names}{If TRUE, use gene names as rownames, otherwise use target names. Duplicate gene names will be removed.}
 
-\item{split_assays}{If TRUE, split the transcript and protein barcoding targets into separate Seurat assays ("Transcript" and "Protein", respectively).}
+\item{split_assays}{If TRUE, split the transcript and protein barcoding targets into separate Seurat assays ("RNA" and "Protein", respectively).}
 }
 \value{
 Seurat object
